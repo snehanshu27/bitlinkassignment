@@ -1,0 +1,30 @@
+package com.bitly.getgroups;
+
+import static org.testng.AssertJUnit.assertEquals;
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Method;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class TC02_CreateBitlink {
+  @Test
+  public void createBitlink() {
+	  String token="cc034adfdc77be75e9adb892a0bd6d4bb1da7372";
+	  try{
+		  RestAssured.baseURI="https://api-ssl.bitly.com";
+		  RequestSpecification rs=RestAssured.given();
+          Response response=rs.header("Authorization", "Bearer "+token).contentType("application/json").body("{\"long_url\":\"https://google.com\"}").request(Method.POST,"/v4/shorten");
+          int statuscode = response.getStatusCode();
+          System.out.println(statuscode);
+          assertEquals(statuscode,200);
+		  	  
+	  }
+	  catch(Exception e)
+	  {
+		  
+	  }
+	  
+  }
+}

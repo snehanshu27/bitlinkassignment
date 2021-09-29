@@ -1,0 +1,102 @@
+package com.bitly.getgroups;
+
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.testng.annotations.Test;
+import io.restassured.RestAssured;
+import io.restassured.http.Method;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import junit.framework.Assert;
+
+public class TC02_CreateBitlink {
+	String token="cc034adfdc77be75e9adb892a0bd6d4bb1da7372";
+  @Test
+  public void createBitlink() {
+	  
+	  try{
+		 
+		  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		  LocalDateTime now = LocalDateTime.now();
+		  System.out.println(dtf.format(now));
+		  RestAssured.baseURI="https://api-ssl.bitly.com";
+		  RequestSpecification rs=RestAssured.given();
+          Response response=rs.header("Authorization", "Bearer "+token).contentType("application/json").body("{\"long_url\":\"https://google.com\"}").request(Method.POST,"/v4/shorten");
+          int statuscode = response.getStatusCode();
+          String successMessage=response.getStatusLine();
+          assertEquals(statuscode,200);
+          Assert.assertTrue("Success message is as expected", successMessage.contains("200 OK"));
+          String responsebody=response.getBody().asString();
+          System.out.println(successMessage);
+          JsonPath jp = new JsonPath(responsebody);
+          assertEquals("https://google.com/",jp.get("long_url"));
+          Assert.assertTrue("new ID is created", jp.get("id").toString().contains("bit.ly"));
+          Assert.assertTrue("created date is as expected", jp.get("created_at").toString().contains(dtf.format(now)));
+          Assert.assertTrue("Link is as expected", jp.get("link").toString().contains("https://bit.ly/"));
+        
+          
+		  	  
+	  }
+	  catch(Exception e)
+	  {
+		  System.out.println(e);
+	  }
+	  
+  }
+  
+  /*@Test
+  public void createBitlinkWithoutToken() {
+	 //Verify if bearer token is not passed user gets 403: forbidden error
+	 try
+	 {
+		 
+		 RestAssured.baseURI="https://api-ssl.bitly.com";
+		  RequestSpecification rs=RestAssured.given();
+		  Response response=rs.contentType("application/json").body("{\"long_url\":\"https://google.com\"}").request(Method.POST,"/v4/shorten");
+		  String responseBody = response.getBody().asString();
+		  System.out.println(responseBody);
+		  int statuscode=response.getStatusCode();
+		  assertEquals(statuscode,403);
+	  
+	  }
+	  
+	  catch(Exception e)
+	  {
+		  System.out.println(e);
+	  }
+	  
+ }
+  
+  @Test
+  public void createBitlinkHavingIncorrectURI() {
+	 //Verify if URI is incorrect user gets 404:Not Found
+	 try
+	 {
+		 
+		 RestAssured.baseURI="https://api-ssl.bitly.com";
+		  RequestSpecification rs=RestAssured.given();
+		  Response response=rs.header("Authorization", "Bearer "+token).contentType("application/json").body("{\"long_url\":\"https://google.com\"}").request(Method.POST,"/v4/shorte");
+		  String responseBody = response.getBody().asString();
+		  int statuscode=response.getStatusCode();
+		  assertEquals(statuscode,404);
+	  
+	  }
+	  
+	  catch(Exception e)
+	  {
+		  System.out.println(e);
+	  }
+	  
+ }*/
+  
+  
+  
+
+}

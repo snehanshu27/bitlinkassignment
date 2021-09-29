@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite">
+  <test name="Test">
+    <classes>
+      <class name="com.bitly.getgroups.TC01_GetGroups"/>
+       <class name="com.bitly.getgroups.TC02_CreateBitlink"/>
+        <class name="com.bitly.getgroups.TC03_RetrieveGroup"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

@@ -1,0 +1,31 @@
+package com.bitly.getgroups;
+
+import static org.testng.AssertJUnit.assertEquals;
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Method;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class TC01_GetGroups {
+  @Test
+  public void getGroups() {
+	  try
+	  {
+	  RestAssured.baseURI="https://api-ssl.bitly.com";
+	  RequestSpecification rs=RestAssured.given();
+	  Response response=rs.queryParam("token", "cc034adfdc77be75e9adb892a0bd6d4bb1da7372").request(Method.GET, "/v4/groups");
+	  String responseBody = response.getBody().asString();
+	  System.out.println(responseBody);
+	 // int statuscode=response.getStatusCode();
+	 // assertEquals(statuscode,200);
+	  }
+	  
+	  catch(Exception e)
+	  {
+		  System.out.println(e);
+	  }
+	  
+  }
+}

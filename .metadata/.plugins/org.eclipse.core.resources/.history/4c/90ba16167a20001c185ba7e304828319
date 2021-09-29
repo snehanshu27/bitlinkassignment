@@ -1,0 +1,14 @@
+package com.bitly.getgroups;
+
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+
+public class TC01_GetGroups {
+  @Test
+  public void getGroups() {
+	  
+	  RestAssured.baseURI="https://api-ssl.bitly.com/v4/groups";
+	  
+  }
+}

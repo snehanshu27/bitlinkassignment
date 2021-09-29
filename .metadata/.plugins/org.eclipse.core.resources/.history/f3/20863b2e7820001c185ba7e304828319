@@ -1,0 +1,11 @@
+package com.bitly.getgroups;
+
+import org.testng.annotations.Test;
+
+public class TC01_GetGroups {
+  @Test
+  public void getGroups() {
+	  
+	  RestAssured baseURI
+  }
+}
